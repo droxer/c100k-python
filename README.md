@@ -4,9 +4,13 @@
 
 Demonstrates scalable techniques for handling 10,000 concurrent requests in Python.
 
-## Implementation
+## Install dependencies
 
-### Async Server
+```bash
+make install_dependencies
+```
+
+## Run Async Server
 
 This implementation uses asyncio and uvloop to handle the requests.
 
@@ -14,7 +18,7 @@ This implementation uses asyncio and uvloop to handle the requests.
 make run_async_server
 ```
 
-### Flask Gevent  
+## Run Flask Gevent  
 
 This implementation uses gevent to handle the requests.
 
@@ -22,7 +26,7 @@ This implementation uses gevent to handle the requests.
 make run_flask_gevent
 ```
 
-### FastAPI
+## Run FastAPI
 
 This implementation uses FastAPI to handle the requests.
 
