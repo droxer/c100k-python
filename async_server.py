@@ -1,22 +1,23 @@
 import asyncio
-import logging
+import uvloop
+from loguru import logger
 
-logging.basicConfig(level=logging.INFO, format='%(asctime)s - %(levelname)s - %(message)s')
+logger.add("server.log", rotation="100 MB", retention="10 days")
 
 async def handle_echo(reader: asyncio.StreamReader, writer: asyncio.StreamWriter):
     peername = writer.get_extra_info('peername')
-    logging.info(f"Accepted connection from {peername}")
+    logger.info(f"Accepted connection from {peername}")
 
     try:
         while True:
             data = await reader.read(1024) 
 
             if not data:
-                logging.info(f"Client {peername} disconnected.")
-                break # Client disconnected
+                logger.info(f"Client {peername} disconnected.")
+                break
 
             message = data.decode()
-            logging.info(f"Received from {peername}: {message.strip()}")
+            logger.info(f"Received from {peername}: {message.strip()}")
 
             response = f"Echo from server: {message}".encode()
 
@@ -24,11 +25,11 @@ async def handle_echo(reader: asyncio.StreamReader, writer: asyncio.StreamWriter
             await writer.drain() 
 
     except asyncio.CancelledError:
-        logging.warning(f"Connection handler for {peername} cancelled.")
+        logger.warning(f"Connection handler for {peername} cancelled.")
     except Exception as e:
-        logging.error(f"Error handling connection {peername}: {e}")
+        logger.error(f"Error handling connection {peername}: {e}")
     finally:
-        logging.info(f"Closing connection from {peername}")
+        logger.info(f"Closing connection from {peername}")
         writer.close() 
         await writer.wait_closed()
 
@@ -39,16 +40,16 @@ async def main():
     )
 
     addrs = ', '.join(str(sock.getsockname()) for sock in server.sockets)
-    logging.info(f"Serving on {addrs}")
+    logger.info(f"Serving on {addrs}")
 
     async with server:
         await server.serve_forever()
 
 if __name__ == "__main__":
+    uvloop.install()
     try:
-        # Run the main asyncio event loop
         asyncio.run(main())
     except KeyboardInterrupt:
-        logging.info("Server shutting down.")
+        logger.info("Server shutting down.")
     except Exception as e:
-        logging.critical(f"Unhandled error in main: {e}")
+        logger.critical(f"Unhandled error in main: {e}")
