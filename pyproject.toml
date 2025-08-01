@@ -1,0 +1,9 @@
+[project]
+name = "c100k-python"
+version = "0.1.0"
+description = "C10K in Python"
+readme = "README.md"
+requires-python = ">=3.12"
+dependencies = [
+    "fastapi",
+]
