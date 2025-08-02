@@ -1,4 +1,4 @@
-# C100K in Python
+# C10K in Python
 
 ## Introduction
 
