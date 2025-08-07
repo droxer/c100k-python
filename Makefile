@@ -13,10 +13,10 @@ install_dependencies:
 	uv sync
 
 run_async_server:
-	uv run gunicorn main:app --workers 2 --worker-class uvicorn.workers.UvicornWorker --bind 0.0.0.0:5000
+	uv run gunicorn main:app --workers 2 --worker-class uvicorn.workers.UvicornWorker --bind 0.0.0.0:5003
 
 run_flask_gevent:
 	uv run gunicorn -w 2 -k gevent -b 0.0.0.0:5001 flask_gevent:app
 
 run_fastapi:
-	uv run gunicorn fastapi_server:app --workers 2 --worker-class uvicorn_worker.UvicornWorker --bind 0.0.0.0:5002
+	uv run gunicorn fastapi_server:app --workers 2 --worker-class uvicorn.workers.UvicornWorker --bind 0.0.0.0:5002
